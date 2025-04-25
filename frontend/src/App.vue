@@ -26,6 +26,8 @@
 
       <div v-if="weatherData" class="bg-white/10 rounded-lg p-4 mb-4 text-left">
         <h2 class="text-xl font-semibold mb-2">{{ weatherData.city }}</h2>
+        <img :src="weatherIcon" alt="Icône météo" class="w-20 h-20 my-4 mx-auto" />
+
         <p>🌡️ Température : {{ weatherData.temperature }} °C</p>
         <p>💨 Vent : {{ weatherData.windspeed }} km/h</p>
         <p>🕒 Heure de la dernière mise à jour : {{ formattedTime(weatherData.time) }}</p>
@@ -86,7 +88,6 @@ const searchWeather = async () => {
   }
 }
 
-
 const saveWeather = async () => {
   if (!weatherData.value?.city) return
   await axios.post(`http://localhost:8000/weather/api/save?city=${weatherData.value.city}`)
@@ -120,8 +121,22 @@ const formatSavedDate = (iso) => {
     hour: '2-digit',
     minute: '2-digit'
   })
-  
 }
+
+import { computed } from 'vue'
+
+const weatherIcon = computed(() => {
+  if (!weatherData.value || !weatherData.value.condition) return '/icons/default.png'
+
+  const condition = weatherData.value.condition.toLowerCase()
+
+  if (condition.includes('clear')) return '/icons/sun.png'
+  if (condition.includes('cloud')) return '/icons/cloud.png'
+  if (condition.includes('rain')) return '/icons/rain.png'
+  if (condition.includes('snow')) return '/icons/snow.png'
+
+  return '/icons/default.png'
+})
 
 onMounted(loadSavedWeather)
 </script>
