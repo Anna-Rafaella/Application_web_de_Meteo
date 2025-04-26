@@ -78,7 +78,8 @@ L'application est composée de deux parties principales :
 
 ## 📸 Aperçu visuel
 
-![Aperçu](./assets/demo.jpg)
+![Aperçu](frontend/assets/images/demo.jpg)
+
 
 ---
 
